@@ -88,17 +88,17 @@ void populate_into_struct(Score *s1,char *string){
     //after every call to a "get" method
     char string_buff[MAXBUFLEN];
     strncpy(string_buff,string,MAXBUFLEN);
-    get_away_team(s1,string_buff);
+    set_away_team(s1,string_buff);
     strncpy(string_buff,string,MAXBUFLEN);
-    get_home_team(s1,string_buff);
+    set_home_team(s1,string_buff);
     strncpy(string_buff,string,MAXBUFLEN);
-    get_away_score(s1,string_buff);
+    set_away_score(s1,string_buff);
     strncpy(string_buff,string,MAXBUFLEN);
-    get_home_score(s1,string_buff);
+    set_home_score(s1,string_buff);
     strncpy(string_buff,string,MAXBUFLEN);
-    get_over_under(s1,string_buff);
+    set_over_under(s1,string_buff);
     strncpy(string_buff,string,MAXBUFLEN);
-    get_moneyline(s1,string_buff);
+    set_moneyline(s1,string_buff);
 }
 
 //each get method makes use of the strtok() method to split the score summary sentence and place it into the struct passed in as the argument
