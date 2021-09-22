@@ -14,6 +14,7 @@ def get_todays_scores():
     scores_url = 'https://api.sportsdata.io/v3/nfl/scores/json/ScoresByDate/{date}'.format(date=td)
     #get json object of all the scores, which is a list of json objects
     score_list = (requests.get(url = scores_url , headers = headers)).json()
+    print(score_list)
     #loop through each json object
     for score in score_list:
         #I want the MoneyLine that corresponds to whichever team is winning
