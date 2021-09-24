@@ -42,7 +42,7 @@ int main(){
     else {   
          old_modification_time = file_info.st_mtime;
         }
-     fp = fopen(file_name,"r");
+    fp = fopen(file_name,"r");
     if (fp == NULL){
         perror("Error occurred\n");
         printf("This error occured: %d\n",errno);
@@ -79,8 +79,10 @@ int main(){
             //rewind to beginning of the file since the old scores/text file will be overwritten
             rewind(fp);
         }
-        fclose(fp);
     }
+
+    fclose(fp);
+
 }
 //populate_into_struct parses the string that represents the score summary and places the score into the struct
 void populate_into_struct(Score *s1,char *string){
