@@ -16,15 +16,16 @@ def get_todays_scores():
     #calculate current week number by getting num of days between week1/week18 and dividing by 7. It's an int, so it'll just return a floor value if there's a remainder
     week_no = (days_since_start_of_week_1 / 7).days
     #keys I am interested: home team, away team, home team score, away team score, OverUnder
-    relevant_keys = ['Team','Opponent','Score','OpponentScore','OverUnder']
+    relevant_keys = ['Team','Opponent','Score','OpponentScore','OverUnder','Quarter']
     #open file to write to
-    newfile = open('scores.txt','w')
+    newfile = open('scores.txt','w+')
     scores_url = 'https://api.sportsdata.io/v3/nfl/scores/json/TeamGameStats/2021/{week}'.format(week=week_no)
     #url for scores
     #get json object of all the scores, which is a list of json objects
     score_list = (requests.get(url = scores_url , headers = headers)).json()
     #loop through each json object
-    for score in score_list[0:2:len(score_list)]:
+    #don't need scores for each team, just for game. 2 teams/game, just skip over every other one
+    for score in score_list[::2]:
         #I want the MoneyLine that corresponds to whichever team is winning
         ml_string = ", {} {}".format(score['Team'],score['PointSpread'])
 
@@ -32,8 +33,10 @@ def get_todays_scores():
         
         fixed_dict = {key:value for key,value in score.items() if key in relevant_keys}
         #more API weirdness I had to fix. For some reasons scores were one points too high
-        fixed_dict['Score'] = str(int(fixed_dict['Score']) -1)
-        fixed_dict['OpponentScore'] = str(int(fixed_dict['OpponentScore']) -1)
+        if (fixed_dict['OpponentScore']!=0):
+            fixed_dict['OpponentScore'] = str(int(fixed_dict['OpponentScore']) -1)
+        if (fixed_dict['Score']!=0):
+            fixed_dict['Score'] = str(int(fixed_dict['Score']-1))
         filtered_dict_string = str(fixed_dict)
         #append the moneyline string generated in previous if/else condition
         filtered_dict_string+=ml_string
@@ -64,7 +67,6 @@ def check_and_update():
         #recommended to wait 5 minutes between calls to the API
         time.sleep(5.0)
         check_and_update()
-
 
 def main():
     check_and_update()
